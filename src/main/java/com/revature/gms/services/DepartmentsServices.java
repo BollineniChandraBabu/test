@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.revature.gms.dao.impl.DepartmentsDaoImpl;
 import com.revature.gms.model.Departments;
+import com.revature.gms.util.Logger;
 
 public class DepartmentsServices {
 DepartmentsDaoImpl departmentsDaoImpl=new DepartmentsDaoImpl();
@@ -18,7 +19,7 @@ public void viewDepartments()
 List<Departments> departmentsList=departmentsDaoImpl.viewDepartments();
 	for(Departments departments:departmentsList)
 	{
-		System.out.println(departments.getId() +":" +departments.getName());
+		Logger.info(departments.getId() +":" +departments.getName());
 	}
 }
 

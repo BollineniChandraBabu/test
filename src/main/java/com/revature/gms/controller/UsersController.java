@@ -3,6 +3,7 @@ package com.revature.gms.controller;
 import com.revature.gms.exception.ServiceException;
 import com.revature.gms.model.Users;
 import com.revature.gms.services.UsersServices;
+import com.revature.gms.util.Logger;
 
 public class UsersController {
 	Users users = new Users();
@@ -14,7 +15,7 @@ public class UsersController {
 			userServices.validatingUser(users);
 
 		} catch (ServiceException e) {
-			System.out.println(e.getMessage());
+			Logger.error(e.getMessage());
 		}
 	}
 
@@ -24,7 +25,7 @@ public class UsersController {
 		try {
 			id = userServices.insert(users);
 		} catch (ServiceException e) {
-			System.out.println(e.getMessage());
+			Logger.error(e.getMessage());
 		}
 		return id;
 	}

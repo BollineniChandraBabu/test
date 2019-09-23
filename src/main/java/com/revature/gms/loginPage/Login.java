@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 import com.revature.gms.controller.UsersController;
 import com.revature.gms.exception.ServiceException;
+import com.revature.gms.util.Logger;
 
 public class Login {
 	
@@ -10,16 +11,16 @@ public class Login {
 		String email=null;
 		UsersController usersController = new UsersController();
 		Scanner scanner =new Scanner(System.in);
-		System.out.println("----------------------------\nplease login to use services");
+		Logger.info("----------------------------\nplease login to use services");
 		email=usersController.getEmail();
 		boolean result=usersController.checkByMailId(email);
 		if(result==false) 
 		{
-			System.out.println("email doesnot exist....\n contact Admin....");
-			System.out.println("---------------------------------------------------------------");
+			Logger.error("email doesnot exist....\n contact Admin....");
+			Logger.info("---------------------------------------------------------------");
 			Index.starter();
 		}
-		System.out.println("enter your password :");
+		Logger.info("enter your password :");
 		String password=scanner.next();
 		usersController.loginController(email, password);
 		scanner.close();

@@ -40,7 +40,7 @@ public class UsersDaoImplTest {
 	}
 	@Test
 	public void testActivateAccount() {
-		usersDaoImpl.activateAccount("dsdfd", id, password)
+		usersDaoImpl.activateAccount("dsdfd", 1, "ch@ndra1");
 	}
 
 	@Test

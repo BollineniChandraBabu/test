@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.revature.gms.dao.impl.SubjectsDaoImpl;
 import com.revature.gms.model.Subjects;
+import com.revature.gms.util.Logger;
 
 public class SubjectsServices {
 	SubjectsDaoImpl subjectsDaoImpl =new SubjectsDaoImpl();
@@ -14,10 +15,10 @@ public class SubjectsServices {
 
 	public void viewSubjects() {
 		List<Subjects> subjectsList=subjectsDaoImpl.viewSubjects();
-		System.out.println("subject code:subject name");
+		Logger.info("subject code:subject name");
 		for(Subjects subjects:subjectsList) 
 		{
-			System.out.println(subjects.getId() +"\t:\t "+subjects.getName());
+			Logger.info(subjects.getId() +"\t:\t "+subjects.getName());
 		}
 	}
 

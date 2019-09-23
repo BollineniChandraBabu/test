@@ -8,6 +8,7 @@ import com.revature.gms.exception.DBException;
 import com.revature.gms.exception.ServiceException;
 import com.revature.gms.loginPage.AdminLogin;
 import com.revature.gms.model.Grades;
+import com.revature.gms.util.Logger;
 import com.revature.gms.validator.GradeValidator;
 
 public class GradesServices {
@@ -21,12 +22,13 @@ public class GradesServices {
 				List<Grades> gradesList=null;
 				try {
 					gradesList=gradeDaoImpl.viewGrades();
-					System.out.println("Grade\tMinimum Mark\tMaximum Mark");
+					Logger.info("Grade\tMinimum Mark\tMaximum Mark");
 					for(Grades grades:gradesList) 
 					{
-						System.out.println(grades.getGrade()+"\t"+grades.getMinMark()+"\t\t"+grades.getMaxMark());
+						Logger.info(grades.getGrade()+"\t"+grades.getMinMark()+"\t\t"+grades.getMaxMark());
 					}
 				} catch (DBException e) {
+					Logger.error(e);
 					throw new ServiceException("Unable to view");
 					
 				}
@@ -35,6 +37,7 @@ public class GradesServices {
 				try {
 					result=gradeDaoImpl.checkGradeAvailability(grade);
 				} catch (DBException e) {
+					Logger.error(e);
 					throw new ServiceException("Unable to view");
 				}
 				return result;
@@ -43,16 +46,16 @@ public class GradesServices {
 			{
 				char grade=0;
 				while(true) {
-				System.out.println("enter one grade to view marks....");
+				Logger.info("enter one grade to view marks....");
 				grade=scanner.next().trim().charAt(0);
 				boolean result=gradeDaoImpl.checkGradeAvailability(grade);
 				if(result) {break;}
 				else
 				{
-					System.out.println("grade not available....");
-					System.out.println("available grades.....\n------------------------------");
+					Logger.error("grade not available....");
+					Logger.error("available grades.....\n------------------------------");
 					viewGrades();
-					System.out.println("------------------------------");
+					Logger.error("------------------------------");
 				}
 				}
 				return grade;
@@ -69,7 +72,7 @@ public class GradesServices {
 				grade.setGrade(grades.getGrade());
 				grade.setMaxMark(max);
 				while(true) {
-				System.out.println("enter minimum mark for Grade:" +grades.getGrade());
+				Logger.info("enter minimum mark for Grade:" +grades.getGrade());
 				min=marksServices.getNumber();
 				if(max>min && min>=0) 
 				{
@@ -79,17 +82,17 @@ public class GradesServices {
 				}
 				else 
 				{
-					System.out.println("minimum mark for Garde-"+grades.getGrade() +"should be less than "+max +"and greater than or equal to 0");
+					Logger.error("minimum mark for Garde-"+grades.getGrade() +"should be less than "+max +"and greater than or equal to 0");
 				}
 				}
 				boolean result=gradesDaoImpl.updateGrade(grade);
 				if(result==true)
 				{
-					System.out.println("successfully updated grade marks for grade:"+grade.getGrade());
+					Logger.info("successfully updated grade marks for grade:"+grade.getGrade());
 				}
 				else 
 				{
-					System.out.println("unable to update grade marks");
+					Logger.error("unable to update grade marks");
 					
 					break;
 				}

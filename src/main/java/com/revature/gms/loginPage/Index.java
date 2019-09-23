@@ -2,6 +2,7 @@ package com.revature.gms.loginPage;
 import com.revature.gms.controller.UsersController;
 import com.revature.gms.exception.ServiceException;
 import com.revature.gms.services.MarksServices;
+import com.revature.gms.util.Logger;
 
 public class Index {
 public static void main(String[] args) throws ServiceException {
@@ -11,8 +12,8 @@ public static void main(String[] args) throws ServiceException {
 
 	public static void starter() throws ServiceException {
 	MarksServices marksServices=new MarksServices();
-	System.out.println("welcome.......");
-	System.out.println("select one service\n1.login\t2.activate account");
+	Logger.debug("welcome.......");
+	Logger.info("select one service\n1.login\t2.activate account");
 	int choice=marksServices.getNumber();
 	switch(choice) 
 	{
@@ -29,7 +30,7 @@ public static void main(String[] args) throws ServiceException {
 	}
 	default :
 	{
-		System.out.println("enter correct choice....");
+		Logger.error("enter correct choice....");
 		starter();
 	}
 	}

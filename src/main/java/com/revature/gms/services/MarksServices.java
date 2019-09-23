@@ -14,6 +14,7 @@ import com.revature.gms.model.Grades;
 import com.revature.gms.model.Marks;
 import com.revature.gms.model.Students;
 import com.revature.gms.model.Users;
+import com.revature.gms.util.Logger;
 
 public class MarksServices {
 Marks marks=new Marks();
@@ -39,7 +40,7 @@ Scanner scanner=new Scanner(System.in);
 			try {
 				List<Students> studentsList=studentServices.getStudents();
 				GradesDaoImpl gradesDaoImpl=new GradesDaoImpl();
-				System.out.println("-------------------------------------------------------------------------------");
+				Logger.info("-------------------------------------------------------------------------------");
 				for(Students students:studentsList)
 				{
 					int average=marksDAOImpl.getAverage(students.getRegistrationNumber());
@@ -47,25 +48,27 @@ Scanner scanner=new Scanner(System.in);
 						List<Marks> marksList=marksDAOImpl.getMarksById(students.getRegistrationNumber());
 						for(Marks marks:marksList)
 						{
-							System.out.print("\nStudent Id :"+marks.getStudent().getRegistrationNumber()+"  Student Name :"+marks.getStudent().getName()+"  Average :"+average+"  Grade :"+grade1+"\n");
+							Logger.info("\nStudent Id :"+marks.getStudent().getRegistrationNumber()+"  Student Name :"+marks.getStudent().getName()+"  Average :"+average+"  Grade :"+grade1+"\n");
 							break;
 						}
 						for(Marks marks:marksList)
 						{
-							System.out.print(marks.getSubjects().getName() +":"+marks.getMarks() +"\t");
+							Logger.info(marks.getSubjects().getName() +":"+marks.getMarks() +"\t");
 						}
 				}
-				System.out.println("\n-------------------------------------------------------------------------------");					
+				Logger.info("\n-------------------------------------------------------------------------------");					
 
 				
 				
 			} catch (DBException e) {
+				Logger.error(e);
 				throw new ServiceException("Unable to View" +e);
 				
 			}
 			
 		}
 			catch (DBException e) {
+				Logger.error(e);
 				throw new ServiceException("Unable to View" +e);
 				
 			}
@@ -76,7 +79,7 @@ Scanner scanner=new Scanner(System.in);
 		try {
 			List<Students> studentsList=studentServices.getStudents();
 			GradesDaoImpl gradesDaoImpl=new GradesDaoImpl();
-			System.out.println("-------------------------------------------------------------------------------");
+			Logger.info("-------------------------------------------------------------------------------");
 			for(Students students:studentsList)
 			{
 				int average=marksDAOImpl.getAverage(students.getRegistrationNumber());
@@ -86,19 +89,20 @@ Scanner scanner=new Scanner(System.in);
 					List<Marks> marksList=marksDAOImpl.getMarksById(students.getRegistrationNumber());
 					for(Marks marks:marksList)
 					{
-						System.out.print("\nStudent Id :"+marks.getStudent().getRegistrationNumber()+"  Student Name :"+marks.getStudent().getName()+"\n");
+						Logger.info("\nStudent Id :"+marks.getStudent().getRegistrationNumber()+"  Student Name :"+marks.getStudent().getName()+"\n");
 						break;
 					}
 					for(Marks marks:marksList)
 					{
-						System.out.print(marks.getSubjects().getName() +":"+marks.getMarks() +"\t");
+						Logger.info(marks.getSubjects().getName() +":"+marks.getMarks() +"\t");
 					}
-					System.out.println("\n-------------------------------------------------------------------------------");					
+					Logger.info("\n-------------------------------------------------------------------------------");					
 				}
 			}
 			
 			
 		} catch (DBException e) {
+			Logger.error(e);
 			throw new ServiceException("Unable to View" +e);
 			
 		}
@@ -113,8 +117,8 @@ Scanner scanner=new Scanner(System.in);
 			Marks marks1=checkAvailability(marks.getStudent().getRegistrationNumber(), marks.getSubjects().getId());
 			if(marks1.getStudent().getRegistrationNumber()!=0)
 			{
-				System.out.println("marks available for Id:"+marks.getStudent().getRegistrationNumber());
-				System.out.println("select one service....\n1.update marks\t2.view marks\t0.exit");
+				Logger.error("marks available for Id:"+marks.getStudent().getRegistrationNumber());
+				Logger.info("select one service....\n1.update marks\t2.view marks\t0.exit");
 				int choice;
 				while(true) {
 					choice=getNumber();
@@ -122,7 +126,7 @@ Scanner scanner=new Scanner(System.in);
 					{break;}
 					else 
 					{
-						System.out.println("enter correct choice.....");
+						Logger.error("enter correct choice.....");
 					}
 				}
 				switch(choice) 
@@ -132,14 +136,14 @@ Scanner scanner=new Scanner(System.in);
 					result=marksDAOImpl.updateMarks(marks);
 					if(result) 
 					{
-						System.out.println("successfully updated marks for ID:"+marks.getStudent().getRegistrationNumber());
+						Logger.info("successfully updated marks for ID:"+marks.getStudent().getRegistrationNumber());
 					}
-					else { System.out.println("unable to update marks for Id:"+marks.getStudent().getRegistrationNumber()); }
+					else { Logger.error("unable to update marks for Id:"+marks.getStudent().getRegistrationNumber()); }
 					break;
 				}
 				case 2:
 				{
-					marksDAOImpl.
+					
 					break;
 				}
 				case 0:{break;}
@@ -149,11 +153,12 @@ Scanner scanner=new Scanner(System.in);
 			{
 				result=marksDAOImpl.insertMarks(marks);
 				if(result)
-				{ System.out.println("marks successfully inserted for Id :"+marks.getStudent().getRegistrationNumber()); }
-				else { System.out.println("some error occured....unable to insert marks...."); }
+				{ Logger.info("marks successfully inserted for Id :"+marks.getStudent().getRegistrationNumber()); }
+				else { Logger.error("some error occured....unable to insert marks...."); }
 			}
 		}
 		catch (DBException e) {
+			Logger.error(e);
 			throw new ServiceException("Unable to View" +e);
 		}
 		return result;
@@ -173,7 +178,7 @@ Scanner scanner=new Scanner(System.in);
 		}
 		catch(Exception e) 
 		{
-			System.out.println("enter correct choice....");
+			Logger.error("enter correct choice....");
 			result=false;
 		}}
 		return number;
@@ -195,7 +200,7 @@ public int marksValidator() {
 		}
 		else 
 		{
-			System.out.println("marks should be >=0 and <= 100");
+			Logger.error("marks should be >=0 and <= 100");
 		}
 		
 	}
@@ -204,30 +209,30 @@ public int marksValidator() {
 public void viewBySubjectCode(int subjectCode) {
 	GradesDaoImpl gradesDaoImpl=new GradesDaoImpl();
 	marksList = marksDAOImpl.viewBySubjectCode(subjectCode);
-	System.out.println("------------------------------------------------------");
+	Logger.info("------------------------------------------------------");
 	for(Marks marks:marksList) {
-		System.out.println("subject code :"+marks.getSubjects().getId());
-		System.out.println("subject name :"+marks.getSubjects().getName());
+		Logger.info("subject code :"+marks.getSubjects().getId());
+		Logger.info("subject name :"+marks.getSubjects().getName());
 		break;
 	}
-	System.out.println("ID\tName\tmarks\tGrade");
+	Logger.info("ID\tName\tmarks\tGrade");
 	for(Marks marks1:marksList) {
-	System.out.println(marks1.getStudent().getId()+"\t"+marks1.getStudent().getName()+"\t"+marks1.getMarks()+"\t"+gradesDaoImpl.getGrade(marks1.getMarks()));
+	Logger.info(marks1.getStudent().getId()+"\t"+marks1.getStudent().getName()+"\t"+marks1.getMarks()+"\t"+gradesDaoImpl.getGrade(marks1.getMarks()));
 	}
-	System.out.println("------------------------------------------------------");
+	Logger.info("------------------------------------------------------");
 
 	
 }
 public void viewBySubjectName(String subjectName) {
 	GradesDaoImpl gradesDaoImpl=new GradesDaoImpl();
 	marksList = marksDAOImpl.viewBySubjectName(subjectName);
-	System.out.println("------------------------------------------------------");
+	Logger.info("------------------------------------------------------");
 	
-	System.out.println("ID\tName\tsubject code\tsubject name\tmarks\tGrade");
+	Logger.info("ID\tName\tsubject code\tsubject name\tmarks\tGrade");
 	for(Marks marks1:marksList) {
-	System.out.println(marks1.getStudent().getId()+"\t"+marks1.getStudent().getName()+"\t\t"+marks1.getSubjects().getId()+"\t    "+marks1.getSubjects().getName()+"\t"+marks1.getMarks()+"\t"+gradesDaoImpl.getGrade(marks1.getMarks()));
+	Logger.info(marks1.getStudent().getId()+"\t"+marks1.getStudent().getName()+"\t\t"+marks1.getSubjects().getId()+"\t    "+marks1.getSubjects().getName()+"\t"+marks1.getMarks()+"\t"+gradesDaoImpl.getGrade(marks1.getMarks()));
 	}
-	System.out.println("------------------------------------------------------");
+	Logger.info("------------------------------------------------------");
 
 	
 }

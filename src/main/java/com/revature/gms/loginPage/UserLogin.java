@@ -16,6 +16,7 @@ import com.revature.gms.model.Subjects;
 import com.revature.gms.model.Users;
 import com.revature.gms.services.GradesServices;
 import com.revature.gms.services.MarksServices;
+import com.revature.gms.util.Logger;
 
 public class UserLogin {
 	boolean result = false;
@@ -26,10 +27,10 @@ public class UserLogin {
 	Scanner scanner=new Scanner(System.in);
 	MarksServices marksServices=new MarksServices();
 	public void userLogin() throws ServiceException {
-		System.out.println("welcome user......");
+		Logger.debug("welcome user......");
 	}
 public void userLogin(Users users) throws ServiceException {
-	System.out.println("select one service....\n-----------------------------------------\n1.view top scorer\t2.view all\n3.view by particular grade\n4.view scores by subject\n5.view grade range\t6.insert/update your marks\t0.log out\n-----------------------------------------");
+	Logger.info("select one service....\n-----------------------------------------\n1.view top scorer\t2.view all\n3.view by particular grade\n4.view scores by subject\n5.view grade range\t6.insert/update your marks\t0.log out\n-----------------------------------------");
 
 	int choice=marksServices.getNumber();
 	switch(choice)
@@ -38,17 +39,17 @@ public void userLogin(Users users) throws ServiceException {
 		{
 			List<Marks> marksList=new ArrayList<Marks>();
 			marksList=marksController.findMaxMarks();
-			System.out.println("------------------------------------------------------");
-			System.out.println("top scorer marks.....");
+			Logger.info("------------------------------------------------------");
+			Logger.info("top scorer marks.....");
 			for(Marks marks:marksList) {
-				System.out.println("id :"+marks.getStudent().getRegistrationNumber());
-				System.out.println("Name :"+marks.getStudent().getName());
+				Logger.info("id :"+marks.getStudent().getRegistrationNumber());
+				Logger.info("Name :"+marks.getStudent().getName());
 				break;
 			}
 			for(Marks marks1:marksList) {
-			System.out.println(marks1.getSubjects().getName()+":"+marks1.getMarks());
+			Logger.info(marks1.getSubjects().getName()+":"+marks1.getMarks());
 			}
-			System.out.println("------------------------------------------------------");
+			Logger.info("------------------------------------------------------");
 			userLogin(users);
 			break;
 		}
@@ -67,25 +68,25 @@ public void userLogin(Users users) throws ServiceException {
 		}
 	case 4:
 		{
-			System.out.println("--------------------------------------------------------------------");
-			System.out.println("select one service.....\n1.view marks by subject code\t 2.view marks by subject name");
+			Logger.info("--------------------------------------------------------------------");
+			Logger.info("select one service.....\n1.view marks by subject code\t 2.view marks by subject name");
 			while(true)
 			{
 				choice=marksServices.getNumber();
 				if(choice>0 && choice<3) {break;}
-				else {System.out.println("select correct choice...");}
+				else {Logger.error("select correct choice...");}
 			}
 			switch(choice)
 			{
 			case 1:{
 				int subjectCode;
 				while(true) {
-			System.out.println("enter subject code to search.....");	
+			Logger.info("enter subject code to search.....");	
 			subjectCode=marksServices.getNumber();
 			SubjectsController subjectsController=new SubjectsController();
 			result =subjectsController.checkSubjectCode(subjectCode);
 			if(result) { break; }
-			else { System.out.println("invalid subject code....");
+			else { Logger.error("invalid subject code....");
 			subjectsController.viewSubjects();
 			}
 				}
@@ -97,12 +98,12 @@ public void userLogin(Users users) throws ServiceException {
 			{
 				String subjectName;
 				while(true) {
-			System.out.println("enter subject name to search.....");	
+			Logger.info("enter subject name to search.....");	
 			subjectName=scanner.next();
 			SubjectsController subjectsController=new SubjectsController();
 			result =subjectsController.checkSubjectName(subjectName);
 			if(result) { break; }
-			else { System.out.println("invalid subject code....");
+			else { Logger.error("invalid subject code....");
 			subjectsController.viewSubjects();
 			}
 				}
@@ -122,7 +123,7 @@ public void userLogin(Users users) throws ServiceException {
 	{
 		while(true) 
 		{
-			System.out.println("enter student Id:");
+			Logger.info("enter student Id:");
 			int studentId=marksServices.getNumber();
 			Students students=new Students();
 			StudentsController studentsController=new StudentsController();
@@ -135,12 +136,12 @@ public void userLogin(Users users) throws ServiceException {
 			}
 			else
 			{
-				System.out.println("student id doesnot exist");
+				Logger.error("student id doesnot exist");
 			}
 		}
 		while(true) 
 		{
-			System.out.println("enter subject id:");
+			Logger.info("enter subject id:");
 			int subjectId=marksServices.getNumber();
 			MarksController marksController=new MarksController();
 			Subjects subjects =new Subjects();
@@ -153,12 +154,12 @@ public void userLogin(Users users) throws ServiceException {
 			}
 			else
 			{
-				System.out.println("subject Id doesnot exist");
+				Logger.error("subject Id doesnot exist");
 			}
 		}
 		while(true) 
 		{
-			System.out.println("enter marks..");
+			Logger.info("enter marks..");
 			int mark=marksServices.getNumber();
 			
 			if(mark<=100 && mark>=0)
@@ -168,7 +169,7 @@ public void userLogin(Users users) throws ServiceException {
 			}
 			else
 			{
-				System.out.println("marks should be >=0 and <=100");
+				Logger.error("marks should be >=0 and <=100");
 			}
 		}
 		marksController.insertOrUpdate(marks);
@@ -177,14 +178,14 @@ public void userLogin(Users users) throws ServiceException {
 	
 	case 0:
 	{
-	System.out.println("exiting.....");
+	Logger.debug("exiting.....");
 	Login login=new Login();
 	login.login();
 	break;	
 	}
 	default :
 	{
-	System.out.println("enter correct choice....");
+	Logger.error("enter correct choice....");
 	userLogin(users);
 	break;
 	}
