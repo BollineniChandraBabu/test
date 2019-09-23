@@ -4,8 +4,10 @@ import com.revature.gms.model.Users;
 
 public interface UsersDao {
 
-Users login(String email, String password);
-int insert(Users users);
-boolean checkByMailId(String mailId);
-boolean activateAccount(String email, int id, String password);
+	public Users login(String email,String password);
+	public int insert(Users users);
+	public boolean checkByMailId(String mailId);
+	public boolean activateAccount(String email, int id, String password);
+	public Users findById(int id);
+	public int findIdByMail(String mailId);
 }

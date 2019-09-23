@@ -6,11 +6,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.revature.gms.dao.SubjectsDao;
 import com.revature.gms.exception.DBException;
 import com.revature.gms.model.Subjects;
 import com.revature.gms.util.DbUtils;
 
-public class SubjectsDaoImpl {
+public class SubjectsDaoImpl implements SubjectsDao {
 	Connection connection = null;
 	PreparedStatement preparedStatement = null;
 	ResultSet resultSet;
